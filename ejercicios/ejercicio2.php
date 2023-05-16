@@ -1,6 +1,7 @@
 <?php 
     if($_POST) {
         // Recibir informacion del formulario HTML ( POST )
+        // METODO POST OCULTA Y RECEPCIONA LOS DATOS ENVIADOS
         $nombre=$_POST['txtNombre'];
 
         echo "Hola ".$nombre;
