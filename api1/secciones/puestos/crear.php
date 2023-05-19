@@ -1,3 +1,17 @@
+<?php 
+include("../../db.php");
+if($_POST) {
+    // Recolectar los datos de POST
+    $nombredelpuesto=(isset($_POST["nombredelpuesto"])?$_POST["nombredelpuesto"]:"");
+    // Preparar la inseccion de datos
+    $sentencia=$conexion->prepare("INSERT INTO tbl_puestos(nombredelpuesto) VALUES (:nombredelpuesto)");
+    // Asignando valores que vienen de POST
+    $sentencia->bindParam(":nombredelpuesto", $nombredelpuesto);
+    $sentencia->execute();
+    header("Location:index.php");
+}   
+
+?>
 <?php include("../../templates/header.php"); ?>
 <br>
 

@@ -1,3 +1,9 @@
+<?php 
+include("../../db.php");
+$sentencia = $conexion->prepare("SELECT * FROM tbl_empleados");
+$sentencia->execute();
+$lista_tbl_empleados= $sentencia->fetchAll(PDO::FETCH_ASSOC);
+?>
 <?php include("../../templates/header.php"); ?>
 
 <br>
@@ -19,17 +25,19 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php foreach($lista_tbl_empleados as $registro) { ?>
                     <tr class="">
-                        <td scope="row">Sas</td>
-                        <td>Imagen.png</td>
-                        <td>CV.pdf</td>
-                        <td>Programador Jr.</td>
-                        <td>17/05/2023</td>
+                        <td scope="row"><?php echo $registro['nombre'], " ", $registro['apellidos'] ?></td>
+                        <td><?php echo $registro['foto'] ?></td>
+                        <td><?php echo $registro['cv'] ?></td>
+                        <td><?php echo $registro['idpuesto'] ?></td>
+                        <td><?php echo $registro['fechadeingreso'] ?></td>
                         <td>  <a class="btn btn-primary" href="crear.php" role="button">Carta</a> 
                             | <a class="btn btn-info" href="editar.php" role="button">Editar</a> 
                             | <a class="btn btn-danger" href=".php" role="button">Eliminar</a>
                         </td>
                     </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>

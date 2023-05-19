@@ -1,7 +1,30 @@
+<?php 
+include("../../db.php");
+
+// Eliminar Puesto
+if(isset($_GET['txtID'])){
+    $txtID = isset($_GET['txtID']) ? $_GET['txtID'] : "";
+
+    try {
+        $sentencia = $conexion->prepare("DELETE FROM tbl_puestos WHERE id=:id");
+        $sentencia->bindParam(":id", $txtID);
+        $sentencia->execute();
+        header("Location: index.php");
+    } catch (Exception $e) {
+        // Error en la ejecución de la sentencia
+        echo "Ocurrió un error: " . $e->getMessage();
+        exit;
+    }
+}
+
+// Mostrar Puestos
+$sentencia = $conexion->prepare("SELECT * FROM tbl_puestos");
+$sentencia->execute();
+$lista_tbl_puestos= $sentencia->fetchAll(PDO::FETCH_ASSOC);
+?>
 <?php include("../../templates/header.php"); ?>
 
 <br>
-
 <div class="card">
     <div class="card-header">
     <a name="" id="" class="btn btn-primary" href="crear.php" role="button">Agregar Puesto</a>
@@ -17,13 +40,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php foreach($lista_tbl_puestos as $registro) { ?>
                     <tr class="">
-                        <td scope="row">1</td>
-                        <td>Programador Jr.</td>
+                        <td scope="row"><?php echo $registro['id']?></td>
+                        <td><?php echo $registro['nombredelpuesto']?></td>
+
                         <td> <a class="btn btn-info" href="editar.php" role="button">Editar</a> 
-                            | <a class="btn btn-danger" href=".php" role="button">Eliminar</a>
+                            | <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id']?>" role="button">Eliminar</a>
                         </td>
                     </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>

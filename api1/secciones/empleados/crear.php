@@ -7,15 +7,15 @@
     <div class="card-body">
         <form action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
-              <label for="" class="form-label">Nombre</label>
+              <label for="" class="form-label">Nombre:</label>
               <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
             </div>
             <div class="mb-3">
-              <label for="" class="form-label">Apellidos</label>
+              <label for="" class="form-label">Apellidos:</label>
               <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder="Apellidos">
             </div>
             <div class="mb-3">
-              <label for="" class="form-label">Nombre</label>
+              <label for="" class="form-label">Foto:</label>
               <input type="file" class="form-control" name="foto" id="foto">
             </div>
             <div class="mb-3">
