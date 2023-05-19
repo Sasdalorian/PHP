@@ -45,7 +45,7 @@ $lista_tbl_puestos= $sentencia->fetchAll(PDO::FETCH_ASSOC);
                         <td scope="row"><?php echo $registro['id']?></td>
                         <td><?php echo $registro['nombredelpuesto']?></td>
 
-                        <td> <a class="btn btn-info" href="editar.php" role="button">Editar</a> 
+                        <td> <a class="btn btn-info" href="editar.php?txtID=<?php echo $registro['id']?>" role="button">Editar</a> 
                             | <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id']?>" role="button">Eliminar</a>
                         </td>
                     </tr>
