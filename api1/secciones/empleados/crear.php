@@ -1,3 +1,30 @@
+<?php 
+  include("../../db.php");
+  if($_POST) {
+    print_r($_POST);
+    print_r($_FILES);
+    $nombre = isset($_POST["nombre"]) ? $_POST["nombre"] : "";
+    $apellidos = isset($_POST["apellidos"]) ? $_POST["apellidos"] : "";
+    $foto = isset($_FILES["foto"]["name"]) ? $_FILES["foto"]["name"] : "";
+    $cv = isset($_FILES["cv"]["name"]) ? $_FILES["cv"]["name"] : "";
+    $idpuesto = isset($_POST["idpuesto"]) ? $_POST["idpuesto"] : "";
+    $fechaingreso = isset($_POST["fechadeingreso"]) ? $_POST["fechadeingreso"] : "";
+    
+    $sentencia = $conexion->prepare("INSERT INTO tbl_empleados(nombre, apellidos, foto, cv, idpuesto, fechadeingreso) VALUES (:nombre, :apellidos, :foto, :cv, :idpuesto, :fechadeingreso)");
+    $sentencia->bindParam(":nombre", $nombre);
+    $sentencia->bindParam(":apellidos", $apellidos);
+    $sentencia->bindParam(":foto", $foto);
+    $sentencia->bindParam(":cv", $cv);
+    $sentencia->bindParam(":idpuesto", $idpuesto);
+    $sentencia->bindParam(":fechadeingreso", $fechaingreso);
+    $sentencia->execute();
+    header("Location:index.php");
+  }
+
+$sentencia = $conexion->prepare("SELECT * FROM tbl_puestos");
+$sentencia->execute();
+$lista_tbl_puestos= $sentencia->fetchAll(PDO::FETCH_ASSOC);
+?>
 <?php include("../../templates/header.php"); ?>
 <br>
 <div class="card">
@@ -8,32 +35,33 @@
         <form action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
               <label for="" class="form-label">Nombre:</label>
-              <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
+              <input required type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
             </div>
             <div class="mb-3">
               <label for="" class="form-label">Apellidos:</label>
-              <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder="Apellidos">
+              <input required type="text" class="form-control" name="apellidos" id="apellidos" placeholder="Apellidos">
             </div>
             <div class="mb-3">
               <label for="" class="form-label">Foto:</label>
-              <input type="file" class="form-control" name="foto" id="foto">
+              <input required type="file" class="form-control" name="foto" id="foto">
             </div>
             <div class="mb-3">
               <label for="" class="form-label">CV (PDF)</label>
-              <input type="file" class="form-control" name="cv" id="cv">
+              <input required type="file" class="form-control" name="cv" id="cv">
             </div>
             <div class="mb-3">
                 <label for="idpuesto" class="form-label">Puesto:</label>
-                <select class="form-select form-select-sm" name="idpuesto" id="idpuesto">
-                    <option selected>Select One</option>
-                    <option value="">New Delhi</option>
-                    <option value="">Istanbul</option>
-                    <option value="">Jakarta</option>
+
+                <select required class="form-select form-select-sm" name="idpuesto" id="idpuesto">
+                  <option selected>Select One</option>
+                  <?php  foreach($lista_tbl_puestos as $registro) { ?>
+                    <option value="<?php echo $registro['id']?>"><?php echo $registro['nombredelpuesto']?></option>
+                  <?php } ?>
                 </select>
             </div>
             <div class="mb-3">
               <label for="fechadeingreso" class="form-label">Fecha de ingreso:</label>
-              <input type="date" class="form-control" name="fechadeingreso" id="fechadeingreso" aria-describedby="emailHelpId" placeholder="Fecha de ingreso a la empresa">
+              <input required type="date" class="form-control" name="fechadeingreso" id="fechadeingreso" aria-describedby="emailHelpId" placeholder="Fecha de ingreso a la empresa">
             </div>
 
             <button type="submit" class="btn btn-success">Agregar Registro</button>

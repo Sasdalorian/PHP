@@ -41,13 +41,13 @@
             <div class="mb-3">
               <label for="txtID" class="form-label">ID: </label>
               <input readonly type="text" value="<?php echo $txtID;?>" 
-                class="form-control" name="txtID" id="txtID" aria-describedby="helpId" placeholder="ID">
+                required class="form-control" name="txtID" id="txtID" aria-describedby="helpId" placeholder="ID">
             </div>
             
             <div class="mb-3">
               <label for="nombredelpuesto" class="form-label">Nombre del Puesto:</label>
               <input type="text" value="<?php echo $nombredelpuesto;?>"
-                class="form-control" name="nombredelpuesto" id="nombredelpuesto" placeholder="Nombre del puesto">
+                required class="form-control" name="nombredelpuesto" id="nombredelpuesto" placeholder="Nombre del puesto">
             </div>
 
             <button type="submit" class="btn btn-success">Editar</button>

@@ -24,7 +24,7 @@ if($_POST) {
             <div class="mb-3">
               <label for="nombredelpuesto" class="form-label">Nombre del Puesto:</label>
               <input type="text"
-                class="form-control" name="nombredelpuesto" id="nombredelpuesto" placeholder="Nombre del puesto">
+                required class="form-control" name="nombredelpuesto" id="nombredelpuesto" placeholder="Nombre del puesto">
             </div>
 
             <button type="submit" class="btn btn-success">Agregar</button>

@@ -1,3 +1,18 @@
+<?php 
+include("../../db.php");
+  if($_POST) {
+    $usuario=(isset($_POST["usuario"])?$_POST["usuario"]:"");
+    $password=(isset($_POST["password"])?$_POST["password"]:"");
+    $email=(isset($_POST["email"])?$_POST["email"]:"");
+
+    $sentencia=$conexion->prepare("INSERT INTO tbl_usuarios(usuario, password, email) VALUES (:usuario, :password, :email)");
+    $sentencia->bindParam(":usuario", $usuario);
+    $sentencia->bindParam(":password", $password);
+    $sentencia->bindParam(":email", $email);
+    $sentencia->execute();
+    header("Location:index.php");
+  }
+?>
 <?php include("../../templates/header.php"); ?>
 
 <br>
@@ -10,17 +25,17 @@
             <div class="mb-3">
               <label for="usuario" class="form-label">Nombre del Usuario:</label>
               <input type="text"
-                class="form-control" name="usuario" id="usuario" placeholder="Nombre del usuario">
+                required class="form-control" name="usuario" id="usuario" placeholder="Nombre del usuario">
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Contraseña:</label>
               <input type="password"
-                class="form-control" name="password" id="password" placeholder="Escriba su contraseña">
+                required class="form-control" name="password" id="password" placeholder="Escriba su contraseña">
             </div>
             <div class="mb-3">
               <label for="email" class="form-label">Correo:</label>
               <input type="email"
-                class="form-control" name="email" id="email" placeholder="Escriba su correo">
+                required class="form-control" name="email" id="email" placeholder="Escriba su correo">
             </div>
 
             <button type="submit" class="btn btn-success">Agregar</button>

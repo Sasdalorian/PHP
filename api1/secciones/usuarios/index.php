@@ -1,5 +1,23 @@
 <?php 
 include("../../db.php");
+
+// Eliminar Usuario
+if(isset($_GET['txtID'])){
+    $txtID = isset($_GET['txtID']) ? $_GET['txtID'] : "";
+
+    try {
+        $sentencia = $conexion->prepare("DELETE FROM tbl_usuarios WHERE id=:id");
+        $sentencia->bindParam(":id", $txtID);
+        $sentencia->execute();
+        header("Location: index.php");
+    } catch (Exception $e) {
+        // Error en la ejecución de la sentencia
+        echo "Ocurrió un error: " . $e->getMessage();
+        exit;
+    }
+}
+
+// Mostrar Usuarios
 $sentencia = $conexion->prepare("SELECT * FROM tbl_usuarios");
 $sentencia->execute();
 $lista_tbl_usuarios= $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -7,7 +25,6 @@ $lista_tbl_usuarios= $sentencia->fetchAll(PDO::FETCH_ASSOC);
 <?php include("../../templates/header.php"); ?>
 
 <br>
-
 <div class="card">
     <div class="card-header">
     <a name="" id="" class="btn btn-primary" href="crear.php" role="button">Agregar Usuario</a>
@@ -31,8 +48,8 @@ $lista_tbl_usuarios= $sentencia->fetchAll(PDO::FETCH_ASSOC);
                         <td><?php echo $registro['usuario'] ?></td>
                         <td><?php echo $registro['password'] ?></td>
                         <td><?php echo $registro['email'] ?></td>
-                        <td> <a class="btn btn-info" href="editar.php" role="button">Editar</a> 
-                            | <a class="btn btn-danger" href=".php" role="button">Eliminar</a>
+                        <td> <a class="btn btn-info" href="editar.php?txtID=<?php echo $registro['id']?>" role="button">Editar</a> 
+                            | <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id']?>" role="button">Eliminar</a>
                         </td>
                     </tr>
                     <?php } ?>
