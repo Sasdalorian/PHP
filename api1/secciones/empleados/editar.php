@@ -8,6 +8,13 @@
             $sentencia->execute();
             $registro=$sentencia->fetch(PDO::FETCH_LAZY);
 
+            $sentencia->bindParam(":nombre", $nombre);
+            $sentencia->bindParam(":apellidos", $apellidos);
+            $sentencia->bindParam(":foto", $nombreArchivo_foto);
+            $sentencia->bindParam(":cv", $nombreArchivo_cv);
+            $sentencia->bindParam(":idpuesto", $idpuesto);
+            $sentencia->bindParam(":fechadeingreso", $fechaingreso);
+
             $nombre=$registro['nombre'];
             $apellidos=$registro['apellidos'];
             $foto=$registro['foto'];
@@ -24,6 +31,38 @@
     $sentencia = $conexion->prepare("SELECT * FROM tbl_puestos");
     $sentencia->execute();
     $lista_tbl_puestos= $sentencia->fetchAll(PDO::FETCH_ASSOC);
+
+    if($_POST) {
+      $txtID = isset($_POST['txtID']) ? $_POST['txtID'] : "";
+      $nombre = isset($_POST["nombre"]) ? $_POST["nombre"] : "";
+      $apellidos = isset($_POST["apellidos"]) ? $_POST["apellidos"] : "";
+      $idpuesto = isset($_POST["idpuesto"]) ? $_POST["idpuesto"] : "";
+      $fechaingreso = isset($_POST["fechadeingreso"]) ? $_POST["fechadeingreso"] : "";
+      
+      $sentencia = $conexion->prepare("
+      UPDATE tbl_Empleados 
+      SET
+        nombre=:nombre,
+        apellidos=:apellidos,
+        idpuesto=:idpuesto,
+        fechadeingreso=:fechadeingreso
+      WHERE 
+        id=:txtID
+      ");
+      
+      $sentencia->bindParam(":txtID", $txtID);
+      $sentencia->bindParam(":nombre", $nombre);
+      $sentencia->bindParam(":apellidos", $apellidos);  
+      $sentencia->bindParam(":idpuesto", $idpuesto);
+      $sentencia->bindParam(":fechadeingreso", $fechaingreso);
+      $sentencia->execute();
+
+
+      $foto = isset($_FILES["foto"]["name"]) ? $_FILES["foto"]["name"] : "";
+      $cv = isset($_FILES["cv"]["name"]) ? $_FILES["cv"]["name"] : "";
+
+      //header("Location:index.php");
+    }
 ?>
 <?php include("../../templates/header.php"); ?>
 
@@ -35,37 +74,42 @@
     <div class="card-body">
         <form action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
+              <label for="txtID" class="form-label">ID: </label>
+              <input readonly type="text" value="<?php echo $txtID;?>" class="form-control" name="txtID" id="txtID" aria-describedby="helpId" placeholder="ID">
+            </div>
+            <div class="mb-3">
               <label for="" class="form-label">Nombre:</label>
-              <input value="<?php echo $nombre?>" required type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
+              <input value="<?php echo $nombre?>" type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
             </div>
             <div class="mb-3">
               <label for="" class="form-label">Apellidos:</label>
-              <input value="<?php echo $apellidos?>" required type="text" class="form-control" name="apellidos" id="apellidos" placeholder="Apellidos">
+              <input value="<?php echo $apellidos?>" type="text" class="form-control" name="apellidos" id="apellidos" placeholder="Apellidos">
             </div>
             <div class="mb-3">
-              <label for="" class="form-label">Foto:</label>
-              <input required type="file" class="form-control" name="foto" id="foto">
+              <label for="" class="form-label">Foto:</label><br>
+              <img style="padding-bottom:.5rem" width="200" src="<?php echo $registro['foto'];?>" class="img-fluid rounded-top" alt="No se ha podido cargar la foto.">
+              <input type="file" class="form-control" name="foto" id="foto">
             </div>
             <div class="mb-3">
-              <label for="" class="form-label">CV (PDF)</label>
-              <input value="<?php echo $cv?>" required type="file" class="form-control" name="cv" id="cv">
+              <label for="" class="form-label">CV (PDF):</label>
+              <a target="_blank" href="<?php echo $cv;?>"><?php echo $cv;?>></a>
+              <input type="file" class="form-control" name="cv" id="cv">
             </div>
             <div class="mb-3">
                 <label for="idpuesto" class="form-label">Puesto:</label>
-
-                <select required class="form-select form-select-sm" name="idpuesto" id="idpuesto">
-                  <option selected>Select One</option>
-                  <?php  foreach($lista_tbl_puestos as $registro) { ?>
-                    <option value="<?php echo $registro['id']?>"><?php echo $registro['nombredelpuesto']?></option>
-                  <?php } ?>
+                <select class="form-select form-select-sm" name="idpuesto" id="idpuesto">
+                    <?php  foreach($lista_tbl_puestos as $registro) { ?>
+                  <option <?php echo ($idpuesto== $registro['id'])?"selected":"";?> value="<?php echo $registro['id']?>">
+                  <?php echo $registro['nombredelpuesto']?></option>
+                    <?php } ?>
                 </select>
             </div>
             <div class="mb-3">
               <label for="fechadeingreso" class="form-label">Fecha de ingreso:</label>
-              <input value="<?php echo $fechadeingreso?>" required type="date" class="form-control" name="fechadeingreso" id="fechadeingreso" aria-describedby="emailHelpId" placeholder="Fecha de ingreso a la empresa">
+              <input value="<?php echo $fechadeingreso?>" type="date" class="form-control" name="fechadeingreso" id="fechadeingreso" aria-describedby="emailHelpId" placeholder="Fecha de ingreso a la empresa">
             </div>
 
-            <button type="submit" class="btn btn-success">Agregar Registro</button>
+            <button type="submit" class="btn btn-success">Editar Empleado</button>
             <a name="" id="" class="btn btn-primary" href="index.php" role="button">Cancelar</a>
         </form>
     </div>

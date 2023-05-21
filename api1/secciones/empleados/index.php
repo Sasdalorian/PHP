@@ -4,17 +4,32 @@ include("../../db.php");
 // Eliminar Empleados
 if(isset($_GET['txtID'])){
     $txtID = isset($_GET['txtID']) ? $_GET['txtID'] : "";
-
     try {
+        $sentencia=$conexion->prepare("SELECT foto,cv FROM tbl_empleados WHERE id=:id");
+        $sentencia->bindParam(":id", $txtID);
+        $sentencia->execute();
+        $registroRecuperado=$sentencia->fetch(PDO::FETCH_LAZY);
+        if(isset($registroRecuperado["foto"]) && $registroRecuperado["foto"]!=""){
+            if(file_exists("./".$registroRecuperado['foto'])){
+                unlink("./".$registroRecuperado['foto']);
+            };
+        };
+        if(isset($registroRecuperado["cv"]) && $registroRecuperado["cv"]!=""){
+            if(file_exists("./".$registroRecuperado['cv'])){
+                unlink("./".$registroRecuperado['cv']);
+            };
+        };
+
         $sentencia = $conexion->prepare("DELETE FROM tbl_empleados WHERE id=:id");
         $sentencia->bindParam(":id", $txtID);
         $sentencia->execute();
         header("Location: index.php");
+
     } catch (Exception $e) {
         // Error en la ejecución de la sentencia
         echo "Ocurrió un error: " . $e->getMessage();
         exit;
-    }
+    };
 }
 
 // Mostrar Empleados
@@ -46,7 +61,8 @@ $lista_tbl_empleados= $sentencia->fetchAll(PDO::FETCH_ASSOC);
                     <?php foreach($lista_tbl_empleados as $registro) { ?>
                     <tr class="">
                         <td scope="row"><?php echo $registro['nombre'], " ", $registro['apellidos'] ?></td>
-                        <td><?php echo $registro['foto'] ?></td>
+                        <td>
+                            <img width="70" src="<?php echo $registro['foto'];?>" class="img-fluid rounded-top" alt="No se ha podido cargar la foto.">
                         <td><?php echo $registro['cv'] ?></td>
                         <td><?php echo $registro['idpuesto'] ?></td>
                         <td><?php echo $registro['fechadeingreso'] ?></td>

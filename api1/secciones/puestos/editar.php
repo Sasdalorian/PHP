@@ -50,7 +50,7 @@
                 required class="form-control" name="nombredelpuesto" id="nombredelpuesto" placeholder="Nombre del puesto">
             </div>
 
-            <button type="submit" class="btn btn-success">Editar</button>
+            <button type="submit" class="btn btn-success">Editar puesto</button>
             <a class="btn btn-primary" href="index.php" role="button">Cancelar</a>
         </form>
     </div>

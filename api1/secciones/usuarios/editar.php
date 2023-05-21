@@ -61,7 +61,7 @@
                 required class="form-control" name="email" id="email" placeholder="Escriba su correo">
             </div>
 
-            <button type="submit" class="btn btn-success">Agregar</button>
+            <button type="submit" class="btn btn-success">Editar usuario</button>
             <a class="btn btn-primary" href="index.php" role="button">Cancelar</a>
         </form>
     </div>

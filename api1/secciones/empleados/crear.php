@@ -13,8 +13,27 @@
     $sentencia = $conexion->prepare("INSERT INTO tbl_empleados(nombre, apellidos, foto, cv, idpuesto, fechadeingreso) VALUES (:nombre, :apellidos, :foto, :cv, :idpuesto, :fechadeingreso)");
     $sentencia->bindParam(":nombre", $nombre);
     $sentencia->bindParam(":apellidos", $apellidos);
-    $sentencia->bindParam(":foto", $foto);
-    $sentencia->bindParam(":cv", $cv);
+
+    // Creando nombre por fecha a la foto
+    $fecha= new DateTime();
+    $nombreArchivo_foto=($foto!='')?$fecha->getTimestamp()."_".$_FILES["foto"]["name"]:"";
+    // crear un archivo temporal para moverlo a un nuevo destino
+    $tmp_foto=$_FILES["foto"]['tmp_name'];
+    if($tmp_foto!=""){
+      move_uploaded_file($tmp_foto, "./".$nombreArchivo_foto);
+    }
+
+    $nombreArchivo_cv=($cv!='')?$fecha->getTimestamp()."_".$_FILES["cv"]["name"]:"";
+    // crear un archivo temporal para moverlo a un nuevo destino
+    $tmp_cv=$_FILES["cv"]['tmp_name'];
+    if($tmp_cv!=""){
+      move_uploaded_file($tmp_cv, "./".$nombreArchivo_cv);
+    }
+
+    $sentencia->bindParam(":foto", $nombreArchivo_foto);
+    $sentencia->bindParam(":cv", $nombreArchivo_cv);
+
+
     $sentencia->bindParam(":idpuesto", $idpuesto);
     $sentencia->bindParam(":fechadeingreso", $fechaingreso);
     $sentencia->execute();
