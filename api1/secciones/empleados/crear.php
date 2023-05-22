@@ -62,11 +62,11 @@ $lista_tbl_puestos= $sentencia->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <div class="mb-3">
               <label for="" class="form-label">Foto:</label>
-              <input required type="file" class="form-control" name="foto" id="foto">
+              <input type="file" class="form-control" name="foto" id="foto">
             </div>
             <div class="mb-3">
               <label for="" class="form-label">CV (PDF)</label>
-              <input required type="file" class="form-control" name="cv" id="cv">
+              <input type="file" class="form-control" name="cv" id="cv">
             </div>
             <div class="mb-3">
                 <label for="idpuesto" class="form-label">Puesto:</label>

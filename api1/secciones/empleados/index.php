@@ -46,9 +46,10 @@ $lista_tbl_empleados= $sentencia->fetchAll(PDO::FETCH_ASSOC);
     </div>
     <div class="card-body">
         <div class="table-responsive-sm">
-            <table class="table">
+            <table class="table" id="tablaID">
                 <thead>
                     <tr>
+                        <th scope="col">Nombre</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Foto</th>
                         <th scope="col">CV</th>
@@ -60,13 +61,14 @@ $lista_tbl_empleados= $sentencia->fetchAll(PDO::FETCH_ASSOC);
                 <tbody>
                     <?php foreach($lista_tbl_empleados as $registro) { ?>
                     <tr class="">
-                        <td scope="row"><?php echo $registro['nombre'], " ", $registro['apellidos'] ?></td>
+                        <td><?php echo $registro['id'] ?></td>
+                        <td><?php echo $registro['nombre'], " ", $registro['apellidos'] ?></td>
                         <td>
                             <img width="70" src="<?php echo $registro['foto'];?>" class="img-fluid rounded-top" alt="No se ha podido cargar la foto.">
-                        <td><?php echo $registro['cv'] ?></td>
+                        <td><a href="<?php echo $registro['cv'] ?>"><?php echo $registro['cv'] ?></a></td>
                         <td><?php echo $registro['idpuesto'] ?></td>
                         <td><?php echo $registro['fechadeingreso'] ?></td>
-                        <td>  <a class="btn btn-primary" href="crear.php" role="button">Carta</a> 
+                        <td>  <a class="btn btn-primary" href="cartaRecomendacion.php?txtID=<?php echo $registro['id']?>" role="button">Carta</a> 
                             | <a class="btn btn-info" href="editar.php?txtID=<?php echo $registro['id']?>" role="button">Editar</a>
                             | <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id']?>" role="button">Eliminar</a>
                         </td>

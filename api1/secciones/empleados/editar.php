@@ -59,10 +59,58 @@
 
 
       $foto = isset($_FILES["foto"]["name"]) ? $_FILES["foto"]["name"] : "";
-      $cv = isset($_FILES["cv"]["name"]) ? $_FILES["cv"]["name"] : "";
+      $fecha= new DateTime();
+      $nombreArchivo_foto=($foto!='')?$fecha->getTimestamp()."_".$_FILES["foto"]["name"]:"";
+      $tmp_foto=$_FILES["foto"]['tmp_name'];
+      if($tmp_foto!=""){
+        move_uploaded_file($tmp_foto, "./".$nombreArchivo_foto);
 
-      //header("Location:index.php");
-    }
+        // ELIMINAR FOTO ANTERIOR de DB
+        $sentencia=$conexion->prepare("SELECT foto FROM tbl_empleados WHERE id=:id");
+        $sentencia->bindParam(":id", $txtID);
+        $sentencia->execute();
+        $registroRecuperado=$sentencia->fetch(PDO::FETCH_LAZY);
+        if(isset($registroRecuperado["foto"]) && $registroRecuperado["foto"]!=""){
+            if(file_exists("./".$registroRecuperado['foto'])){
+                unlink("./".$registroRecuperado['foto']);
+            };
+        };
+        
+        // SUBIR NUEVA FOTO a DB
+        $sentencia = $conexion->prepare("UPDATE tbl_Empleados SET foto=:foto WHERE id=:id");
+        $sentencia->bindParam(":foto", $nombreArchivo_foto);
+        $sentencia->bindParam(":id", $txtID);
+        $sentencia->execute();
+      }
+
+      $cv = isset($_FILES["cv"]["name"]) ? $_FILES["cv"]["name"] : "";
+      $nombreArchivo_cv=($cv!='')?$fecha->getTimestamp()."_".$_FILES["cv"]["name"]:"";
+      $tmp_cv=$_FILES["cv"]['tmp_name'];
+      if($tmp_cv!=""){
+        move_uploaded_file($tmp_cv, "./".$nombreArchivo_cv);
+        
+        // Buscar archivo relacionado con empleado
+        $sentencia=$conexion->prepare("SELECT cv FROM tbl_empleados WHERE id=:id");
+        $sentencia->bindParam(":id", $txtID);
+        $sentencia->execute();
+        $registroRecuperado=$sentencia->fetch(PDO::FETCH_LAZY);
+
+        if(isset($registroRecuperado["cv"]) && $registroRecuperado["cv"]!=""){
+          if(file_exists("./".$registroRecuperado['cv'])){
+              unlink("./".$registroRecuperado['cv']);
+          };
+        };
+      };
+        // Actualizar CV solo si se seleccionó un archivo en el formulario
+        if ($cv != "") {
+          // Actualizar el nombre del CV en la base de datos
+          $sentencia = $conexion->prepare("UPDATE tbl_empleados SET cv=:cv WHERE id=:id");
+          $sentencia->bindParam(":cv", $nombreArchivo_cv);
+          $sentencia->bindParam(":id", $txtID);
+          $sentencia->execute();
+        }
+      header("Location:index.php");
+    }     
 ?>
 <?php include("../../templates/header.php"); ?>
 
@@ -92,7 +140,7 @@
             </div>
             <div class="mb-3">
               <label for="" class="form-label">CV (PDF):</label>
-              <a target="_blank" href="<?php echo $cv;?>"><?php echo $cv;?>></a>
+              <a target="_blank" href="<?php echo $cv;?>"><?php echo $cv;?></a>
               <input type="file" class="form-control" name="cv" id="cv">
             </div>
             <div class="mb-3">
