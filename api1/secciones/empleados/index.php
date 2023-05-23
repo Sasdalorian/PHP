@@ -33,7 +33,8 @@ if(isset($_GET['txtID'])){
 }
 
 // Mostrar Empleados
-$sentencia = $conexion->prepare("SELECT * FROM tbl_empleados");
+$sentencia = $conexion->prepare("SELECT *,
+(SELECT nombredelpuesto FROM tbl_puestos WHERE tbl_puestos.id=tbl_empleados.idpuesto limit 1) as puesto FROM tbl_empleados");
 $sentencia->execute();
 $lista_tbl_empleados= $sentencia->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -66,7 +67,7 @@ $lista_tbl_empleados= $sentencia->fetchAll(PDO::FETCH_ASSOC);
                         <td>
                             <img width="70" src="<?php echo $registro['foto'];?>" class="img-fluid rounded-top" alt="No se ha podido cargar la foto.">
                         <td><a href="<?php echo $registro['cv'] ?>"><?php echo $registro['cv'] ?></a></td>
-                        <td><?php echo $registro['idpuesto'] ?></td>
+                        <td><?php echo $registro['puesto'] ?></td>
                         <td><?php echo $registro['fechadeingreso'] ?></td>
                         <td>  <a class="btn btn-primary" href="cartaRecomendacion.php?txtID=<?php echo $registro['id']?>" role="button">Carta</a> 
                             | <a class="btn btn-info" href="editar.php?txtID=<?php echo $registro['id']?>" role="button">Editar</a>

@@ -3,11 +3,12 @@
 // Recepcionamos ID para mostrar nombre e ID del puesto
 if(isset($_GET['txtID'])){
     $txtID = isset($_GET['txtID']) ? $_GET['txtID'] : "";
+
     try {
-        $sentencia = $conexion->prepare("SELECT * FROM tbl_empleados WHERE id=:id");
+        $sentencia = $conexion->prepare("SELECT *, (SELECT nombredelpuesto FROM tbl_puestos WHERE tbl_puestos.id = tbl_empleados.idpuesto LIMIT 1) AS puesto FROM tbl_empleados WHERE id=:id");
         $sentencia->bindParam(":id", $txtID);
         $sentencia->execute();
-        $registro=$sentencia->fetch(PDO::FETCH_LAZY);
+        $registro= $sentencia->fetch(PDO::FETCH_LAZY);
 
         $nombre=$registro['nombre'];
         $apellidos=$registro['apellidos'];
@@ -17,6 +18,8 @@ if(isset($_GET['txtID'])){
         $foto=$registro['foto'];
         $cv=$registro['cv'];
         $idpuesto=$registro['idpuesto'];
+        $puesto=$registro['puesto'];
+
         $fechadeingreso=$registro['fechadeingreso'];
 
         $fechaInicio= new Datetime($fechadeingreso);
@@ -44,11 +47,11 @@ if(isset($_GET['txtID'])){
 <body>
     <h1>Carta de Recomendación Laboral</h1>
     <br><br>
-    22/05/2023
+    <?php echo date('d M Y')?>
     <br><br>
     Estimado/a a quien pueda interesar:
     <br><br>
-    Me complace recomendar sinceramente a <?php echo $nombreCompleto?> para todo. Durante nuestros <?php echo $diferencia->y;?> año/s de colaboracion, he sido testigo de su dedicación y habilidades excepcionales como <?php echo $idpuesto ?>, talento. <?php echo $nombreCompleto?> es un/a diamante en bruto, un individuo con una fuerte ética laboral y una actitud positiva.
+    Me complace recomendar sinceramente a <?php echo $nombreCompleto?> para todo. Durante nuestros <?php echo $diferencia->y;?> año(s) de colaboracion, he sido testigo de su dedicación y habilidades excepcionales como <?php echo $puesto?>, <?php echo $nombreCompleto?> es un/a diamante en bruto, un individuo con una fuerte ética laboral y una actitud positiva.
     <br>
     Estoy convencido/a de que <?php echo $nombreCompleto?> será un/a activo/a valioso/a para su trabajo. Si necesitas más información, no dudes en contactarme.
     <br><br><br>
@@ -57,3 +60,22 @@ Atentamente,
     Ing. Italo Pasalacua
 </body>
 </html>
+
+<?php 
+// PASAR RECOMENDACION A PDF
+$HTML=ob_get_clean();
+require_once("../../libs/autoload.inc.php");
+use Dompdf\Dompdf;
+$dompdf = new Dompdf();
+$opciones= $dompdf->getOptions();
+
+$opciones->set(array("isRemoteEnabled"=>true));
+
+$dompdf->setOptions($opciones);
+
+$dompdf->loadHTML($HTML);
+
+$dompdf->setPaper('letter');
+$dompdf->render();
+$dompdf->stream("archivo.pdf", array("Attachment"=>false));
+?>
