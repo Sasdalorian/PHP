@@ -9,7 +9,8 @@ if(isset($_GET['txtID'])){
         $sentencia = $conexion->prepare("DELETE FROM tbl_puestos WHERE id=:id");
         $sentencia->bindParam(":id", $txtID);
         $sentencia->execute();
-        header("Location: index.php");
+        $mensaje="Registro Eliminado";
+        header("Location: index.php?msg=".$mensaje);
     } catch (Exception $e) {
         // Error en la ejecución de la sentencia
         echo "Ocurrió un error: " . $e->getMessage();
@@ -23,7 +24,6 @@ $sentencia->execute();
 $lista_tbl_puestos= $sentencia->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <?php include("../../templates/header.php"); ?>
-
 <br>
 <div class="card">
     <div class="card-header">
@@ -46,7 +46,7 @@ $lista_tbl_puestos= $sentencia->fetchAll(PDO::FETCH_ASSOC);
                         <td><?php echo $registro['nombredelpuesto']?></td>
 
                         <td> <a class="btn btn-info" href="editar.php?txtID=<?php echo $registro['id']?>" role="button">Editar</a> 
-                            | <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id']?>" role="button">Eliminar</a>
+                            | <a class="btn btn-danger" href="javascript:borrar(<?php echo $registro['id']?>)" role="button">Eliminar</a>
                         </td>
                     </tr>
                     <?php } ?>
@@ -55,6 +55,4 @@ $lista_tbl_puestos= $sentencia->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 </div>
-
-
 <?php include("../../templates/footer.php"); ?>

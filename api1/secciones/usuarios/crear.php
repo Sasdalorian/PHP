@@ -10,7 +10,8 @@ include("../../db.php");
     $sentencia->bindParam(":password", $password);
     $sentencia->bindParam(":email", $email);
     $sentencia->execute();
-    header("Location:index.php");
+    $mensaje="Registro Agregado";
+    header("Location: index.php?msg=".$mensaje);
   }
 ?>
 <?php include("../../templates/header.php"); ?>

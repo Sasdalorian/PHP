@@ -49,7 +49,7 @@ $lista_tbl_usuarios= $sentencia->fetchAll(PDO::FETCH_ASSOC);
                         <td><?php echo $registro['password'] ?></td>
                         <td><?php echo $registro['email'] ?></td>
                         <td> <a class="btn btn-info" href="editar.php?txtID=<?php echo $registro['id']?>" role="button">Editar</a> 
-                            | <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id']?>" role="button">Eliminar</a>
+                            | <a class="btn btn-danger" href="javascript:borrar(<?php echo $registro['id']?>)" role="button">Eliminar</a>
                         </td>
                     </tr>
                     <?php } ?>

@@ -8,7 +8,8 @@ if($_POST) {
     // Asignando valores que vienen de POST
     $sentencia->bindParam(":nombredelpuesto", $nombredelpuesto);
     $sentencia->execute();
-    header("Location:index.php");
+    $mensaje="Registro Agregado";
+    header("Location: index.php?msg=".$mensaje);
 }   
 
 ?>

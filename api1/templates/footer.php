@@ -5,8 +5,6 @@
         SasPrograming 2023
     </footer>
 
-
-
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
     integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
@@ -28,7 +26,25 @@
             });
         });
     </script>
-
+    <!-- ALERT -->
+    <script>
+        function borrar(id){
+            console.log(id)
+            Swal.fire({
+                title: '¿Estás seguro de borrar el registro?',
+                showCancelButton: true,
+                confirmButtonText: 'Si, estoy seguro!',
+                cancelButtonText: 'No, cancelar!',
+                icon: 'warning',
+                confirmButtonColor: '#28a745', // Color verde
+                cancelButtonColor: '#dc3545', // Color rojo
+            }).then((result) => {
+                if(result.isConfirmed){
+                    window.location = "index.php?txtID=" + id;
+                }
+            })
+        }
+    </script>
 </body>
 
 </html>

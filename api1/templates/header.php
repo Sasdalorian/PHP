@@ -18,7 +18,8 @@ $url_base="http://localhost/PHP/api1/";
     <!-- DATA TABLES -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-
+    <!-- SWEET ALERT 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -45,3 +46,9 @@ $url_base="http://localhost/PHP/api1/";
       </ul>
   </nav>
 <main class="container">
+
+<?php if(isset($_GET['msg'])) { ?>
+    <script>
+        Swal.fire({icon:"success", title:"<?php echo $_GET['msg'];?>"});
+    </script>
+<?php } ?>

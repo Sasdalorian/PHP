@@ -46,7 +46,7 @@ $lista_tbl_empleados= $sentencia->fetchAll(PDO::FETCH_ASSOC);
         <a name="" id="" class="btn btn-primary" href="crear.php" role="button">Agregar Registro</a>
     </div>
     <div class="card-body">
-        <div class="table-responsive-sm">
+        <div class="table-responsive-md">
             <table class="table" id="tablaID">
                 <thead>
                     <tr>
@@ -65,13 +65,13 @@ $lista_tbl_empleados= $sentencia->fetchAll(PDO::FETCH_ASSOC);
                         <td><?php echo $registro['id'] ?></td>
                         <td><?php echo $registro['nombre'], " ", $registro['apellidos'] ?></td>
                         <td>
-                            <img width="70" src="<?php echo $registro['foto'];?>" class="img-fluid rounded-top" alt="No se ha podido cargar la foto.">
+                            <img width="70" src="<?php echo $registro['foto'];?>" class="img-fluid rounded-top">
                         <td><a href="<?php echo $registro['cv'] ?>"><?php echo $registro['cv'] ?></a></td>
                         <td><?php echo $registro['puesto'] ?></td>
                         <td><?php echo $registro['fechadeingreso'] ?></td>
                         <td>  <a class="btn btn-primary" href="cartaRecomendacion.php?txtID=<?php echo $registro['id']?>" role="button">Carta</a> 
                             | <a class="btn btn-info" href="editar.php?txtID=<?php echo $registro['id']?>" role="button">Editar</a>
-                            | <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id']?>" role="button">Eliminar</a>
+                            | <a class="btn btn-danger" href="javascript:borrar(<?php echo $registro['id']?>)" role="button">Eliminar</a>
                         </td>
                     </tr>
                     <?php } ?>

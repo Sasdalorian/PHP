@@ -24,7 +24,8 @@
         $sentencia->bindParam(":nombredelpuesto", $nombredelpuesto);
         $sentencia->bindParam(":id", $txtID);
         $sentencia->execute();
-        header("Location:index.php");
+        $mensaje="Registro Editado";
+        header("Location: index.php?msg=".$mensaje);
     }
 ?>
 <?php include("../../templates/header.php"); ?>

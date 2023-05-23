@@ -37,7 +37,8 @@
     $sentencia->bindParam(":idpuesto", $idpuesto);
     $sentencia->bindParam(":fechadeingreso", $fechaingreso);
     $sentencia->execute();
-    header("Location:index.php");
+    $mensaje="Registro Agregado";
+    header("Location: index.php?msg=".$mensaje);
   }
 
 $sentencia = $conexion->prepare("SELECT * FROM tbl_puestos");

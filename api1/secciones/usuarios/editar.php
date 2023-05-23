@@ -28,7 +28,8 @@
     $sentencia->bindParam(":password", $password);
     $sentencia->bindParam(":email", $email);
     $sentencia->execute();
-    header("Location:index.php");
+    $mensaje="Registro Editado";
+    header("Location: index.php?msg=".$mensaje);
 }
 ?>
 <?php include("../../templates/header.php"); ?>
