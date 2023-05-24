@@ -1,5 +1,9 @@
 <?php
+session_start();
 $url_base="http://localhost/PHP/api1/";
+if(!isset($_SESSION['usuario'])){
+    header("Location:".$url_base."login.php");
+};
 ?>
 
 <!doctype html>
@@ -41,7 +45,7 @@ $url_base="http://localhost/PHP/api1/";
               <a class="nav-link" href="<?php echo $url_base?>secciones/usuarios/">Usuarios</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="#">Cerrar Sesión</a>
+              <a class="nav-link" href="<?php echo $url_base?>logout.php">Cerrar Sesión</a>
           </li>
       </ul>
   </nav>
