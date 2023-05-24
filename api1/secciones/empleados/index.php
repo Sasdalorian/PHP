@@ -69,9 +69,12 @@ $lista_tbl_empleados= $sentencia->fetchAll(PDO::FETCH_ASSOC);
                         <td><a href="<?php echo $registro['cv'] ?>"><?php echo $registro['cv'] ?></a></td>
                         <td><?php echo $registro['puesto'] ?></td>
                         <td><?php echo $registro['fechadeingreso'] ?></td>
-                        <td>  <a class="btn btn-primary" href="cartaRecomendacion.php?txtID=<?php echo $registro['id']?>" role="button">Carta</a> 
+                        <td>  
+                            <div style="display: flex; gap:.4rem">
+                              <a class="btn btn-primary" href="cartaRecomendacion.php?txtID=<?php echo $registro['id']?>" role="button">Carta</a> 
                             | <a class="btn btn-info" href="editar.php?txtID=<?php echo $registro['id']?>" role="button">Editar</a>
                             | <a class="btn btn-danger" href="javascript:borrar(<?php echo $registro['id']?>)" role="button">Eliminar</a>
+                            </div>
                         </td>
                     </tr>
                     <?php } ?>
